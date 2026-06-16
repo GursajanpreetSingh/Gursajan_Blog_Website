@@ -94,6 +94,7 @@ def clear_comments():
     db.session.commit()
     return "Comments cleared!"
 
+clear_comments()
 with app.app_context():
     db.create_all()
 
