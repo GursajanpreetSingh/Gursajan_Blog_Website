@@ -88,6 +88,11 @@ class Comment(db.Model):
     parent_post = relationship("BlogPost", back_populates="comments")
     text:Mapped[str] = mapped_column(Text, nullable=False)
 
+@app.route("/clear-comments")
+def clear_comments():
+    Comment.query.delete()
+    db.session.commit()
+    return "Comments cleared!"
 
 with app.app_context():
     db.create_all()
