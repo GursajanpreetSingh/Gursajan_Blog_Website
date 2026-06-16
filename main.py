@@ -94,7 +94,7 @@ def clear_comments():
     db.session.commit()
     return "Comments cleared!"
 
-clear_comments()
+
 with app.app_context():
     db.create_all()
 
@@ -200,7 +200,6 @@ def add_new_post():
     return render_template("make-post.html", form=form, current_user=current_user)
 
 
-# TODO: Use a decorator so only an admin user can edit a post
 @app.route("/edit-post/<int:post_id>", methods=["GET", "POST"])
 @admin_only
 def edit_post(post_id):
@@ -265,6 +264,8 @@ def send_email_user(user_email):
         connection.login(MAIL_ADDRESS, MAIL_APP_PW)
         connection.sendmail(MAIL_ADDRESS, user_email, email_message_user)
 
-
+with app.app_context():
+    Comment.query.delete()
+    db.session.commit()
 if __name__ == "__main__":
     app.run(debug=False)
