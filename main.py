@@ -88,11 +88,6 @@ class Comment(db.Model):
     parent_post = relationship("BlogPost", back_populates="comments")
     text:Mapped[str] = mapped_column(Text, nullable=False)
 
-@app.route("/clear-comments")
-def clear_comments():
-    Comment.query.delete()
-    db.session.commit()
-    return "Comments cleared!"
 
 
 with app.app_context():
@@ -264,8 +259,5 @@ def send_email_user(user_email):
         connection.login(MAIL_ADDRESS, MAIL_APP_PW)
         connection.sendmail(MAIL_ADDRESS, user_email, email_message_user)
 
-with app.app_context():
-    Comment.query.delete()
-    db.session.commit()
 if __name__ == "__main__":
     app.run(debug=False)
