@@ -246,28 +246,15 @@ def contact():
 
 
 def send_email(name, email, phone, message):
-    print("Before SMTP")
-
-    with smtplib.SMTP("smtp.gmail.com", 587, timeout=15) as connection:
-        print("Connected")
-
+    email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
+    with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
         connection.starttls()
-        print("TLS")
-
         connection.login(MAIL_ADDRESS, MAIL_APP_PW)
-        print("Logged In")
-
-        connection.sendmail(
-            MAIL_ADDRESS,
-            MAIL_ADDRESS,
-            "Subject:Test\n\nHello"
-        )
-
-        print("Sent")
+        connection.sendmail(MAIL_ADDRESS, MAIL_ADDRESS, email_message)
 
 def send_email_user(user_email):
     email_message_user = f"Subject:Thank You\n\nThank you for visiting our website. We hope you had a great experience. If you have any suggestions for improvements or new features, we'd be happy to hear them."
-    with smtplib.SMTP("smtp.gmail.com") as connection:
+    with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
         connection.starttls()
         connection.login(MAIL_ADDRESS, MAIL_APP_PW)
         connection.sendmail(MAIL_ADDRESS, user_email, email_message_user)
